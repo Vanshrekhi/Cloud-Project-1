@@ -9,7 +9,7 @@ if (!process.env.MONGODB_URI) { console.error('MONGODB_URI is required. Copy .en
 if (!process.env.FRONTEND_URL) { console.error('FRONTEND_URL is required for the CORS policy.'); process.exit(1); }
 connectDB();
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_URL, methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
+app.use(cors({ origin: [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'], methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
 app.use(express.json());
 if (process.env.MCP_SECRET) {
   app.post(`/mcp/${process.env.MCP_SECRET}`, mcpHandler);
