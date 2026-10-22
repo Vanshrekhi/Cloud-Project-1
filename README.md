@@ -70,6 +70,27 @@ npm run dev
 
 Request fields: `studentId`, `name`, `email`, `department`, `semester`, and `contact`. Successful mutations return `{ "success": true, "message": "..." }`.
 
+## MCP Integration
+
+Claude sends Model Context Protocol requests to the backend endpoint on Render. The backend's Express MCP handler uses the existing Student model to read and manage records in MongoDB Atlas:
+
+`Claude → MCP endpoint on Render → Express → MongoDB Atlas`
+
+The MCP server provides these tools:
+
+- `list_students()` — list all students
+- `search_students({ query })` — search names and student IDs by case-insensitive partial match
+- `get_student({ studentId })` — retrieve one student by student ID
+- `add_student({ studentId, name, email, department, semester, contact })` — add a validated student
+- `update_student({ studentId, ...fields })` — update a student by student ID
+- `delete_student({ studentId })` — delete a student by student ID
+
+Set `MCP_SECRET` in the Render backend environment variables to a long, random secret. The secret is part of the endpoint path and authorizes access:
+
+`https://<render-app>.onrender.com/mcp/<MCP_SECRET>`
+
+In Claude, open **Settings → Connectors → Add custom connector** and enter the endpoint URL above.
+
 ## Deploy to Render
 
 1. Push this project to GitHub and create a Render **Web Service** with `backend` as Root Directory.
